@@ -2,9 +2,9 @@ import argparse
 import json
 import os
 import subprocess as sp
-import pandas as pd
-
 from ftplib import FTP
+
+import pandas as pd
 from io import BytesIO
 from pathlib import Path
 
