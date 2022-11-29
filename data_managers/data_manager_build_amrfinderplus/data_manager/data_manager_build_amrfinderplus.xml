@@ -9,7 +9,7 @@
         python '$__tool_directory__/data_manager_build_amrfinderplus.py'
         '$output_file'
         --db_version '$database_list.database_version_select'
-        #if '$database_list.database_date_select' != 'latest'
+        #if $database_list.database_version_select != 'latest':
             --db_date '$database_list.database_date_select'
         #end if
         $test_data_manager
@@ -23,8 +23,9 @@
                 <option value="3.9">V3.9</option>
                 <option value="3.8">V3.8</option>
                 <option value="3.6">V3.6</option>
-                <option value="3.2">V3.2</option>
             </param>
+            <when value="latest">
+            </when>
             <when value="3.10">
                 <param name="database_date_select" type="select" label="Date version">
                 <option value="2022-10-11.2" selected="true">2022-10-11.2</option>
@@ -59,12 +60,6 @@
                 <option value="2020-03-20.1">2020-03-20.1</option>
                 </param>
             </when>
-            <when value="3.2">
-                <param name="database_date_select" type="select" label="Date version">
-                <option value="2019-10-30.1" selected="true">2019-10-30.1</option>
-                <option value="2020-03-20.1">2020-03-20.1</option>
-                </param>
-            </when>
         </conditional>
          <param name="test_data_manager" type="hidden" value=""/>
     </inputs>
@@ -75,20 +70,19 @@
         <!-- Test_1 DB latest -->
         <test expect_num_outputs="1">
             <param name="test_data_manager" value="--test"/>
-            <conditional name="database_list">
-                <param name="database_version_select" value="latest"/>
-            </conditional>
             <output name="output_file" value="amrfinderplus_test_data_manager.json" />
         </test>
-        <!-- Test_2 DB V3.2 -->
+        <!-- Test_2 DB 3.2 -->
         <test expect_num_outputs="1">
             <param name="test_data_manager" value="--test"/>
-             <conditional name="database_list">
-                <param name="database_version_select" value="3.2"/>
-                 <param name="database_date_select" value="2020-03-20.1"/>
+            <conditional name="database_list">
+                <param name="database_version_select" value="3.6"/>
+                <param name="database_date_select" value="2020-03-20.1"/>
             </conditional>
             <output name="output_file" value="amrfinderplus_test_data_manager.json" />
         </test>
+
+
     </tests>
     <help><![CDATA[
         Download amrfinderplus database from the NCBI server

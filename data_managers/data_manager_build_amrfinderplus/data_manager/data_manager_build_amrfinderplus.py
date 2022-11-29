@@ -76,6 +76,7 @@ class DownloadAmrFinderPlusDatabase(GetAmrFinderPlusDataManager):
                  test_mode=False):
 
         super().__init__()
+        self.json_file_path = json_file_path
         self._output_dir = output_dir
         self._ncbi_ftp_url = ncbi_url
         self._ncbi_database_path = "pathogen/Antimicrobial_resistance/AMRFinderPlus/database"
@@ -86,9 +87,7 @@ class DownloadAmrFinderPlusDatabase(GetAmrFinderPlusDataManager):
         self._amrfinderplus_version = amrfinderplus_version
         self._amrfinderplus_date_version = date_version
         self.species_list = None
-        self.json_file_path = json_file_path
         self.test_mode = test_mode
-        self.amrfinderplus_db_path = f'{self._output_dir}/{self._db_name}'
 
     @staticmethod
     def subprocess_cmd(command, *args):
@@ -109,6 +108,7 @@ class DownloadAmrFinderPlusDatabase(GetAmrFinderPlusDataManager):
         Download the amrfinderplus database from the ncbi ftp server
         """
         self.amrfinderplus_db_path = f'{self._output_dir}/{self._db_name}'
+        os.makedirs(self.amrfinderplus_db_path)
         if self._amrfinderplus_version == 'latest':
             self.get_amrfinderplus_version()
 
@@ -203,17 +203,17 @@ class DownloadAmrFinderPlusDatabase(GetAmrFinderPlusDataManager):
         self._amrfinderplus_version = '.'.join(
             db_date_version.getvalue().decode("utf-8").splitlines()[0].split(".")[:2])
 
-    def read_json_input_file(self, json_file_path):
+    def read_json_input_file(self):
         """
         Import the json file
         :param json_file_path: path to the json file containing information
         :return: Parsed json file to the output directory path
         """
-        with open(json_file_path) as fh:
+        with open(self.json_file_path) as fh:
             params = json.load(fh)
         target_dir = params['output_data'][0]['extra_files_path']
         os.makedirs(target_dir)
-        self._output_dir = Path(target_dir)
+        self._output_dir = target_dir
 
     def write_json_infos(self):
         """
@@ -244,15 +244,16 @@ def parse_arguments():
 def main():
     all_args = parse_arguments()
     amrfinderplus_download = DownloadAmrFinderPlusDatabase(amrfinderplus_version=all_args.db_version,
-                                                           date_version=all_args.db_date)
-    amrfinderplus_download.read_json_input_file(json_file_path=all_args.json_file_path)
+                                                           date_version=all_args.db_date,
+                                                           json_file_path=all_args.data_manager_json)
+    amrfinderplus_download.read_json_input_file()
     amrfinderplus_download.download_amrfinderplus_db()
     amrfinderplus_download.make_hmm_profile()
     amrfinderplus_download.make_blastdb()
     amrfinderplus_download.write_json_infos()
 
 
-def local_test(db_version="3.6", db_date="2020-01-06.1", output_path="/home/pierre/test/ncbi_python", only_test=True):
+def local_test(db_version="3.6", db_date="2020-03-20.1", output_path="/home/pierre/test/ncbi_python", only_test=True):
     self = DownloadAmrFinderPlusDatabase(amrfinderplus_version=db_version, date_version=db_date, test_mode=only_test)
     self._output_dir = output_path
     self.download_amrfinderplus_db()
