@@ -73,6 +73,7 @@ class DownloadAmrFinderPlusDatabase(GetAmrFinderPlusDataManager):
                  amrfinderplus_version="latest",
                  json_file_path=None,
                  date_version=None,
+                 amrfinderplus_db_path=None,
                  test_mode=False):
 
         super().__init__()
@@ -88,6 +89,7 @@ class DownloadAmrFinderPlusDatabase(GetAmrFinderPlusDataManager):
         self._amrfinderplus_date_version = date_version
         self.species_list = None
         self.test_mode = test_mode
+        self.amrfinderplus_db_path = amrfinderplus_db_path
 
     @staticmethod
     def subprocess_cmd(command, *args):
@@ -206,7 +208,6 @@ class DownloadAmrFinderPlusDatabase(GetAmrFinderPlusDataManager):
     def read_json_input_file(self):
         """
         Import the json file
-        :param json_file_path: path to the json file containing information
         """
         with open(self.json_file_path) as fh:
             params = json.load(fh)
