@@ -13,7 +13,6 @@
             --db_date '$database_list.database_date_select'
         #end if
         $test_data_manager
-
       ]]></command>
     <inputs>
         <conditional name="database_list">
@@ -70,7 +69,7 @@
         <!-- Test_1 DB latest -->
         <test expect_num_outputs="1">
             <param name="test_data_manager" value="--test"/>
-            <output name="output_file" value="amrfinderplus_test_data_manager.json" />
+            <output name="output_file" value="amrfinderplus_test_data_manager_1.json"/>
         </test>
         <!-- Test_2 DB 3.2 -->
         <test expect_num_outputs="1">
@@ -79,7 +78,7 @@
                 <param name="database_version_select" value="3.6"/>
                 <param name="database_date_select" value="2020-03-20.1"/>
             </conditional>
-            <output name="output_file" value="amrfinderplus_test_data_manager.json" />
+            <output name="output_file" value="amrfinderplus_test_data_manager_2.json"/>
         </test>
 
 

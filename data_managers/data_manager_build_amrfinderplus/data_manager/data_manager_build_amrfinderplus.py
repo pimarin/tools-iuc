@@ -207,7 +207,6 @@ class DownloadAmrFinderPlusDatabase(GetAmrFinderPlusDataManager):
         """
         Import the json file
         :param json_file_path: path to the json file containing information
-        :return: Parsed json file to the output directory path
         """
         with open(self.json_file_path) as fh:
             params = json.load(fh)
@@ -245,20 +244,13 @@ def main():
     all_args = parse_arguments()
     amrfinderplus_download = DownloadAmrFinderPlusDatabase(amrfinderplus_version=all_args.db_version,
                                                            date_version=all_args.db_date,
-                                                           json_file_path=all_args.data_manager_json)
+                                                           json_file_path=all_args.data_manager_json,
+                                                           test_mode=all_args.test)
     amrfinderplus_download.read_json_input_file()
     amrfinderplus_download.download_amrfinderplus_db()
     amrfinderplus_download.make_hmm_profile()
     amrfinderplus_download.make_blastdb()
     amrfinderplus_download.write_json_infos()
-
-
-def local_test(db_version="3.6", db_date="2020-03-20.1", output_path="/home/pierre/test/ncbi_python", only_test=True):
-    self = DownloadAmrFinderPlusDatabase(amrfinderplus_version=db_version, date_version=db_date, test_mode=only_test)
-    self._output_dir = output_path
-    self.download_amrfinderplus_db()
-    self.make_hmm_profile()
-    self.make_blastdb()
 
 
 if __name__ == '__main__':
