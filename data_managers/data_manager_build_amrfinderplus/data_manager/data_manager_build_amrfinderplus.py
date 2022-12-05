@@ -30,7 +30,6 @@ class GetAmrFinderPlusDataManager:
         """
         Skeleton of a data_table format
         return: a data table formatted for json output
-        :return: A dictionary with the data manager skeleton
         """
         self.data_table_entry = {
             "data_tables": {
@@ -42,7 +41,7 @@ class GetAmrFinderPlusDataManager:
     def get_data_manager(self):
         """
         Create the empty data table format and add all the information into
-        :return: The data table with database information
+        return: The data table with database information
         """
         self.amrfinderplus_table_list = self.get_data_table_format()
         amrfinderplus_value = f"amrfinderplus_V{self._amrfinderplus_version}" \
@@ -153,7 +152,7 @@ class DownloadAmrFinderPlusDatabase(GetAmrFinderPlusDataManager):
     def extract_filelist_makeblast(self):
         """
         Extract le list of species which have file in the database
-        :return: a filtered species list of available species in the database
+        return: a filtered species list of available species in the database
         """
         taxa_group_path = Path(f"{self.amrfinderplus_db_path}/taxgroup.tab")
         if Path.exists(taxa_group_path):
@@ -191,8 +190,8 @@ class DownloadAmrFinderPlusDatabase(GetAmrFinderPlusDataManager):
                                   database_version_file="database_format_version.txt"):
         """
         Check the version when latest if provided and update the number
-        :param version_file: name of the file containing version information
-        :param database_version_file: name of the file containing date version information
+        param version_file: name of the file containing version information
+        param database_version_file: name of the file containing date version information
         """
         ftp = FTP(self._ncbi_ftp_url)
         ftp.login(self._login, self._password)
@@ -226,7 +225,7 @@ class DownloadAmrFinderPlusDatabase(GetAmrFinderPlusDataManager):
 def parse_arguments():
     """
     List of arguments provided by the user
-    :return: parsed arguments
+    return: parsed arguments
     """
     # parse options and arguments
     arg_parser = argparse.ArgumentParser()
